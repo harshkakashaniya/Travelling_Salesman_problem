@@ -89,9 +89,12 @@ def plot_mst(dict_final):
     for i in range(len(x)):
         XX=[(file[x[i]-1,1]),(file[y[i]-1,1])]
         YY=[(file[x[i]-1,2]),(file[y[i]-1,2])]
-        plt.plot(XX,YY)
+        plt.plot(XX,YY,'r')
     plt.axis([0,80,0,80])
-    plt.show()
+    # plt.show()
+    plt.pause(1)
+    plt.clf()
+    # plt.close()
 
 def Cost_route(tour):
     Cost=0
@@ -99,7 +102,7 @@ def Cost_route(tour):
         Cost=Cost+distance_formula(file[tour[i]-1,1],file[tour[i]-1,2],file[tour[i+1]-1,1],file[tour[i+1]-1,2])
     return Cost
 
-def plot_tour(tour):
+def plot_tour(tour,i,j):
     Cost=0
     plt.scatter(file[:,1], file[:,2])
     for i, txt in enumerate(file[:,0]):
@@ -109,9 +112,31 @@ def plot_tour(tour):
         Cost=Cost+distance_formula(file[tour[i]-1,1],file[tour[i]-1,2],file[tour[i+1]-1,1],file[tour[i+1]-1,2])
         XX=[(file[tour[i]-1,1]),(file[tour[i+1]-1,1])]
         YY=[(file[tour[i]-1,2]),(file[tour[i+1]-1,2])]
-        plt.plot(XX,YY)
+        plt.plot(XX,YY,'g')
+    # changes Connection
+    #XX=[(file[tour[i]-1,1]),(file[tour[j]-1,1])]
+    #YY=[(file[tour[i]-1,2]),(file[tour[j]-1,2])]
+    plt.axis([0,80,0,80])
+    #plt.plot(XX,YY,'y')
+    # plt.show()
+    plt.pause(0.01)
+    plt.clf()
+
+def plot_final(tour):
+    Cost=0
+    plt.scatter(file[:,1], file[:,2])
+    for i, txt in enumerate(file[:,0]):
+        plt.annotate(txt, (file[:,1][i], file[:,2][i]))
+
+    for i in range(len(tour)-1):
+        Cost=Cost+distance_formula(file[tour[i]-1,1],file[tour[i]-1,2],file[tour[i+1]-1,1],file[tour[i+1]-1,2])
+        XX=[(file[tour[i]-1,1]),(file[tour[i+1]-1,1])]
+        YY=[(file[tour[i]-1,2]),(file[tour[i+1]-1,2])]
+        plt.plot(XX,YY,'b')
     plt.axis([0,80,0,80])
     plt.show()
+
+
 
 def dfs(dict_final,first_element):
     tour_stack=[]
@@ -144,6 +169,7 @@ def optimize(tour):
                 if Cost_route(tour)<Cost:
                     print(Cost)
                     print(j)
+                    plot_tour(tour,i,j)
                     Cost=Cost_route(tour)
                 else:
                     tour=switcher(tour,i,j)
@@ -155,6 +181,7 @@ def optimize(tour):
                 tour[i],tour[i+j]=tour[i+j],tour[i]
                 if Cost_route(tour)<Cost:
                     Cost=Cost_route(tour)
+                    plot_tour(tour,i,j)
                 else:
                     tour[i],tour[i+j]=tour[i+j],tour[i]
     return tour
@@ -170,10 +197,8 @@ print(Cost,'Cost of MST')
 tour=dfs(dict_final,first_element)
 Cost=Cost_route(tour)
 print(Cost)
-plot_tour(tour)
 tour_opt=optimize(tour)
 Cost_opt=Cost_route(tour_opt)
 print(Cost_opt)
-plot_tour(tour_opt)
-
+plot_final(tour_opt)
 ################## End ########################
