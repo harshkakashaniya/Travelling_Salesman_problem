@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import itertools
+import time
+import random
 
 def import_file(file_name):
     file =[]
@@ -19,6 +21,32 @@ def import_file(file_name):
         for b in range(0,np.shape(file)[1]):
             file_mat[a,b]=file[a][b]
     return file_mat
+
+def random_mat(number):
+    mat=np.ones((number,3))
+    for i in range(number):
+        mat[i,0]=i+1
+        mat[i,1]= np.random.randint(1,80)
+        mat[i,2]= np.random.randint(1,80) 
+    return mat
+
+def output_file(tour,input_file,cost):
+    output_file=input_file[:-4]+'.out.tour'
+    output_file_name='eil76.out.tour'
+    f= open(output_file,"w+")
+    f.write("NAME : %s \n"% output_file)
+    f.write("COMMENT : Optimal tour for %s (" % input_file)
+    f.write("%s)\n" % np.round(cost,2))
+    f.write("TYPE : TOUR \n")
+    if len(output_file)==14:
+        f.write("DIMENSION : %s\n" % output_file[3:5])
+    else :
+        f.write("DIMENSION : %s\n" % output_file[3:6])
+    f.write("TOUR_SECTION\n")
+    for item in tour:
+        f.write("%s\n" % item)
+    f.write("-1 \n")
+    f.write("EOF \n")
 
 def distance_formula(X1,Y1,X2,Y2):
     distance=math.pow(math.pow(X1-X2,2)+math.pow(Y1-Y2,2),0.5)
@@ -91,7 +119,7 @@ def plot_mst(dict_final):
         YY=[(file[x[i]-1,2]),(file[y[i]-1,2])]
         plt.plot(XX,YY,'r')
     plt.axis([0,80,0,80])
-    # plt.show()
+    plt.show()
     plt.pause(1)
     plt.clf()
     # plt.close()
@@ -102,7 +130,7 @@ def Cost_route(tour):
         Cost=Cost+distance_formula(file[tour[i]-1,1],file[tour[i]-1,2],file[tour[i+1]-1,1],file[tour[i+1]-1,2])
     return Cost
 
-def plot_tour(tour,i,j):
+def plot_tour(tour):
     Cost=0
     plt.scatter(file[:,1], file[:,2])
     for i, txt in enumerate(file[:,0]):
@@ -113,12 +141,7 @@ def plot_tour(tour,i,j):
         XX=[(file[tour[i]-1,1]),(file[tour[i+1]-1,1])]
         YY=[(file[tour[i]-1,2]),(file[tour[i+1]-1,2])]
         plt.plot(XX,YY,'g')
-    # changes Connection
-    #XX=[(file[tour[i]-1,1]),(file[tour[j]-1,1])]
-    #YY=[(file[tour[i]-1,2]),(file[tour[j]-1,2])]
     plt.axis([0,80,0,80])
-    #plt.plot(XX,YY,'y')
-    # plt.show()
     plt.pause(0.01)
     plt.clf()
 
@@ -161,44 +184,58 @@ def switcher(tour,index,n):
 
 def optimize(tour):
 
-    for k in range(int(len(tour)/2)):
+    #Algorithm 2
+    for k in range(5):
         Cost=Cost_route(tour)
         for j in range(len(tour)-1):
             for i in range(1,len(tour)-1-j):
                 tour=switcher(tour,i,j)
                 if Cost_route(tour)<Cost:
-                    print(Cost)
-                    print(j)
-                    plot_tour(tour,i,j)
+                    #print(Cost)
+                    #print(j)
+                    #plot_tour(tour)
                     Cost=Cost_route(tour)
                 else:
                     tour=switcher(tour,i,j)
-
-    for k in range(3):
+    
+    #Algorithm 1
+    for k in range(2):
         Cost=Cost_route(tour)
         for j in range(len(tour)-2):
             for i in range(1,len(tour)-1-j):
                 tour[i],tour[i+j]=tour[i+j],tour[i]
                 if Cost_route(tour)<Cost:
                     Cost=Cost_route(tour)
-                    plot_tour(tour,i,j)
+                    #plot_tour(tour)
                 else:
                     tour[i],tour[i+j]=tour[i+j],tour[i]
+
     return tour
 
 ################## Main ######################
+master_file=[]
+for i in range(10):
+    input_file='eil51.tsp'
+    #file=import_file(input_file)
+    file=random_mat(300)
+    distance_matrix=distance_mat(file)
+    dict_final,MST_Cost,first_element=MST(distance_matrix)
+    # plot_mst(dict_final)
+    print(dict_final,'Dictionary')
+    print(MST_Cost,'Cost of MST')
+    tour=dfs(dict_final,first_element)
+    # plot_final(tour)
+    Cost_Tour=Cost_route(tour)
+    print(Cost_Tour)
+    start=time.time()
+    tour_opt=optimize(tour)
+    time_taken=time.time()-start
+    print('tour optimization time : ', time.time()-start)
 
-file=import_file('eil51.tsp')
-distance_mat=distance_mat(file)
-dict_final,Cost,first_element=MST(distance_mat)
-plot_mst(dict_final)
-print(dict_final,'Dictionary')
-print(Cost,'Cost of MST')
-tour=dfs(dict_final,first_element)
-Cost=Cost_route(tour)
-print(Cost)
-tour_opt=optimize(tour)
-Cost_opt=Cost_route(tour_opt)
-print(Cost_opt)
-plot_final(tour_opt)
+    Cost_opt=Cost_route(tour_opt)
+    print(Cost_opt)
+    # plot_final(tour_opt)
+    master_file.append([i+1,np.round(MST_Cost,1),np.round(Cost_Tour,1),np.round(Cost_opt,1),np.round(time_taken,1)])
+print(master_file)
+#output_file(tour_opt,input_file,Cost_opt)
 ################## End ########################
