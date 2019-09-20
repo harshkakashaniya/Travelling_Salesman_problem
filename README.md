@@ -3,10 +3,10 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/rohit517/prometheus_frontier_explorer/blob/master/LICENSE)
 
 ## Overview
-
-![](images/Tour_final.png)
-![](images/3_51_1.png)
-
+<p float="left">
+  <img src="images/Tour_final.png" width="420" />
+  <img src="images/3_51_1.png" width="420" /> 
+</p>
 
 The travelling salesman problem (TSP) asks the following question: "Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city and returns to the origin city?" It is an NP-hard problem in combinatorial optimization, important in operations research and theoretical computer science. This project is about solution to travelling salesman problem with 2 approximation. It also has extension for k robots also following images are oprimized routes for one and k robots.  
 
@@ -73,7 +73,13 @@ So from the given MST we get a tour for first data set of eil51.tsp
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 ```
+## Algorithm to impelement K robot algorithm
+
+<p align="center">
+  <img width="200" height="800" src="images/Psudo_k_robo.png">
+</p>
 
 ## Instructions to run the program
 
@@ -98,7 +104,8 @@ For Example:
 python one_robot.py -input eil76.tsp
 ```
 All other details are present in Report also video link is available in report.
-###################################################
+
+
 Instructions for Question 2
 
 (In the same directory of unzip folder)
@@ -114,9 +121,6 @@ For Example:
 ```
 python Question_2.py -input eil76.tsp
 ```
-
-##################################################
-
 
 
 ## Authors/About Us
