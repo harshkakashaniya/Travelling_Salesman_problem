@@ -1,0 +1,42 @@
+CMSC818B
+Homework_1
+Harsh Kakashaniya
+116311236
+
+##################################################
+Video link : 
+1 Robot:  https://youtu.be/74EUgazKQqM
+
+K Robots : https://drive.google.com/drive/folders/1YCj1oz8CSLa_OniN_aKBkrj9TeasQYti?usp=sharing
+##################################################
+Instructions for Question 1
+
+1. Unzip the folder structure
+
+(Through terminal go to directory of unzip folder) 
+
+2. Write the following command
+
+$ python one_robot.py -input eil51.tsp
+
+(This will provide output MST and an animation of optimization)
+
+Note: If you wish to change data file open the code 
+
+$ python one_robot.py -input <file name>
+(For Example: python one_robot.py -input eil76.tsp)
+
+All other details are present in Report also video link is available in report.
+###################################################
+Instructions for Question 2
+
+(In the same directory of unzip folder)
+
+$ python n_robot.py -input eil51.tsp
+<follow terminal to enter number to robots and start point >
+
+$ python n_robot.py -input <file name>
+(For Example: python Question_2.py -input eil76.tsp)
+
+##################################################
+Thank you ...
